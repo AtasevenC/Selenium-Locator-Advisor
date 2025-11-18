@@ -42,21 +42,21 @@ const PageRefactorForm: React.FC<Props> = ({ onAnalyze, isLoading }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Page URL</label>
+        <label className="block text-sm font-medium text-slate-400 mb-1">Page URL</label>
         <input
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="w-full rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm p-2 border"
+          className="w-full rounded-md border-slate-700 bg-slate-800 text-slate-200 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none sm:text-sm p-2 border"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Framework</label>
+        <label className="block text-sm font-medium text-slate-400 mb-1">Framework</label>
         <select
           value={framework}
           onChange={(e) => setFramework(e.target.value)}
-          className="w-full rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm p-2 border bg-white"
+          className="w-full rounded-md border-slate-700 bg-slate-800 text-slate-200 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none sm:text-sm p-2 border"
         >
           <option value="selenium-java">Selenium Java</option>
           <option value="playwright-java">Playwright Java</option>
@@ -65,7 +65,7 @@ const PageRefactorForm: React.FC<Props> = ({ onAnalyze, isLoading }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">
+        <label className="block text-sm font-medium text-slate-400 mb-1">
           <div className="flex items-center gap-2">
             <FileCode className="w-4 h-4" />
             <span>Full Page / Component HTML</span>
@@ -75,7 +75,7 @@ const PageRefactorForm: React.FC<Props> = ({ onAnalyze, isLoading }) => {
           value={html}
           onChange={(e) => setHtml(e.target.value)}
           rows={12}
-          className="w-full font-mono text-xs rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 p-2 border bg-slate-50"
+          className="w-full font-mono text-xs rounded-md border-slate-700 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none p-2 border bg-slate-950 text-slate-300"
           placeholder="Paste the full HTML structure of the component or page here..."
         />
       </div>

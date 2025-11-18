@@ -94,29 +94,29 @@ const ElementAnalysisForm: React.FC<Props> = ({ onAnalyze, isLoading }) => {
       {/* Context */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Page URL</label>
+          <label className="block text-sm font-medium text-slate-400 mb-1">Page URL</label>
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="w-full rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm p-2 border"
+            className="w-full rounded-md border-slate-700 bg-slate-800 text-slate-200 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none sm:text-sm p-2 border"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Element Intent (Description)</label>
+          <label className="block text-sm font-medium text-slate-400 mb-1">Element Intent (Description)</label>
           <input
             type="text"
             value={intent}
             onChange={(e) => setIntent(e.target.value)}
             placeholder="e.g. Primary Login Button"
-            className="w-full rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm p-2 border"
+            className="w-full rounded-md border-slate-700 bg-slate-800 text-slate-200 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none sm:text-sm p-2 border"
           />
         </div>
       </div>
 
       {/* HTML Input */}
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">
+        <label className="block text-sm font-medium text-slate-400 mb-1">
           <div className="flex items-center gap-2">
             <Code className="w-4 h-4" />
             <span>Element Outer HTML</span>
@@ -126,13 +126,13 @@ const ElementAnalysisForm: React.FC<Props> = ({ onAnalyze, isLoading }) => {
           value={html}
           onChange={(e) => setHtml(e.target.value)}
           rows={3}
-          className="w-full font-mono text-xs rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 p-2 border bg-slate-50"
+          className="w-full font-mono text-xs rounded-md border-slate-700 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none p-2 border bg-slate-950 text-slate-300"
         />
       </div>
 
       {/* Metadata Section */}
-      <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
-        <h3 className="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
+      <div className="bg-slate-900 p-4 rounded-lg border border-slate-800 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-200 mb-3 flex items-center gap-2">
           <MousePointer2 className="w-4 h-4" />
           Element Metadata
         </h3>
@@ -140,49 +140,49 @@ const ElementAnalysisForm: React.FC<Props> = ({ onAnalyze, isLoading }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <div>
             <label className="block text-xs text-slate-500">Tag</label>
-            <input type="text" value={tagName} onChange={e => setTagName(e.target.value)} className="w-full text-sm border-b border-slate-300 focus:border-brand-500 outline-none py-1" />
+            <input type="text" value={tagName} onChange={e => setTagName(e.target.value)} className="w-full text-sm bg-transparent border-b border-slate-700 text-slate-300 focus:border-brand-500 outline-none py-1" />
           </div>
           <div>
             <label className="block text-xs text-slate-500">ID</label>
-            <input type="text" value={elemId} onChange={e => setElemId(e.target.value)} className="w-full text-sm border-b border-slate-300 focus:border-brand-500 outline-none py-1" />
+            <input type="text" value={elemId} onChange={e => setElemId(e.target.value)} className="w-full text-sm bg-transparent border-b border-slate-700 text-slate-300 focus:border-brand-500 outline-none py-1" />
           </div>
           <div>
             <label className="block text-xs text-slate-500">Role</label>
-            <input type="text" value={role} onChange={e => setRole(e.target.value)} className="w-full text-sm border-b border-slate-300 focus:border-brand-500 outline-none py-1" />
+            <input type="text" value={role} onChange={e => setRole(e.target.value)} className="w-full text-sm bg-transparent border-b border-slate-700 text-slate-300 focus:border-brand-500 outline-none py-1" />
           </div>
           <div>
             <label className="block text-xs text-slate-500">Text Content</label>
-            <input type="text" value={textContent} onChange={e => setTextContent(e.target.value)} className="w-full text-sm border-b border-slate-300 focus:border-brand-500 outline-none py-1" />
+            <input type="text" value={textContent} onChange={e => setTextContent(e.target.value)} className="w-full text-sm bg-transparent border-b border-slate-700 text-slate-300 focus:border-brand-500 outline-none py-1" />
           </div>
         </div>
 
         <div className="mb-4">
             <label className="block text-xs text-slate-500">Classes</label>
-            <input type="text" value={classes} onChange={e => setClasses(e.target.value)} className="w-full text-sm border-b border-slate-300 focus:border-brand-500 outline-none py-1" />
+            <input type="text" value={classes} onChange={e => setClasses(e.target.value)} className="w-full text-sm bg-transparent border-b border-slate-700 text-slate-300 focus:border-brand-500 outline-none py-1" />
         </div>
 
         <div className="space-y-2">
-          <label className="block text-xs font-medium text-slate-700">Data Attributes</label>
+          <label className="block text-xs font-medium text-slate-400">Data Attributes</label>
           {dataAttrs.map((attr, idx) => (
             <div key={idx} className="flex gap-2">
               <input 
                 placeholder="Attribute (e.g. data-testid)" 
                 value={attr.key} 
                 onChange={e => handleDataAttrChange(idx, 'key', e.target.value)} 
-                className="flex-1 text-xs border rounded p-1" 
+                className="flex-1 text-xs border border-slate-700 bg-slate-800 text-slate-300 rounded p-1" 
               />
               <input 
                 placeholder="Value" 
                 value={attr.value} 
                 onChange={e => handleDataAttrChange(idx, 'value', e.target.value)} 
-                className="flex-1 text-xs border rounded p-1" 
+                className="flex-1 text-xs border border-slate-700 bg-slate-800 text-slate-300 rounded p-1" 
               />
-              <button type="button" onClick={() => handleRemoveDataAttr(idx)} className="text-red-500 hover:text-red-700">
+              <button type="button" onClick={() => handleRemoveDataAttr(idx)} className="text-red-500 hover:text-red-400">
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
           ))}
-          <button type="button" onClick={handleAddDataAttr} className="text-xs flex items-center text-brand-600 hover:text-brand-700 font-medium">
+          <button type="button" onClick={handleAddDataAttr} className="text-xs flex items-center text-brand-400 hover:text-brand-300 font-medium">
             <Plus className="w-3 h-3 mr-1" /> Add Attribute
           </button>
         </div>
@@ -191,21 +191,21 @@ const ElementAnalysisForm: React.FC<Props> = ({ onAnalyze, isLoading }) => {
       {/* Current Locators */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Current CSS (Optional)</label>
+          <label className="block text-sm font-medium text-slate-400 mb-1">Current CSS (Optional)</label>
           <input
             type="text"
             value={currentCss}
             onChange={(e) => setCurrentCss(e.target.value)}
-            className="w-full rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm p-2 border"
+            className="w-full rounded-md border-slate-700 bg-slate-800 text-slate-200 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none sm:text-sm p-2 border"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Current XPath (Optional)</label>
+          <label className="block text-sm font-medium text-slate-400 mb-1">Current XPath (Optional)</label>
           <input
             type="text"
             value={currentXpath}
             onChange={(e) => setCurrentXpath(e.target.value)}
-            className="w-full rounded-md border-slate-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm p-2 border"
+            className="w-full rounded-md border-slate-700 bg-slate-800 text-slate-200 shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none sm:text-sm p-2 border"
           />
         </div>
       </div>

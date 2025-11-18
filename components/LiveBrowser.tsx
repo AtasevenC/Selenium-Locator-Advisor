@@ -258,17 +258,17 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-100">
+    <div className="flex flex-col h-full bg-slate-950">
       
       {/* Browser Toolbar */}
-      <div className="bg-white border-b border-slate-200 px-4 py-2 flex items-center gap-3 flex-shrink-0 shadow-sm z-10">
+      <div className="bg-slate-900 border-b border-slate-800 px-4 py-2 flex items-center gap-3 flex-shrink-0 shadow-sm z-10">
         
         {/* Mode Selector */}
-        <div className="flex bg-slate-100 rounded-lg p-0.5">
+        <div className="flex bg-slate-800 rounded-lg p-0.5 border border-slate-700">
              <button
                 title="Paste HTML Source"
                 onClick={() => setLoadMode('HTML_PASTE')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md flex items-center gap-2 transition-colors ${loadMode === 'HTML_PASTE' ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md flex items-center gap-2 transition-colors ${loadMode === 'HTML_PASTE' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
             >
                 <Code className="w-3.5 h-3.5" />
                 <span className="hidden md:inline">Paste HTML</span>
@@ -276,7 +276,7 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
             <button
                 title="Public Proxy"
                 onClick={() => setLoadMode('PROXY')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md flex items-center gap-2 transition-colors ${loadMode === 'PROXY' ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md flex items-center gap-2 transition-colors ${loadMode === 'PROXY' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
             >
                 <Globe className="w-3.5 h-3.5" />
                  <span className="hidden md:inline">Proxy</span>
@@ -284,18 +284,18 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
             <button
                 title="Direct Embed (No Inspector)"
                 onClick={() => setLoadMode('DIRECT')}
-                className={`px-3 py-1.5 text-xs font-medium rounded-md flex items-center gap-2 transition-colors ${loadMode === 'DIRECT' ? 'bg-white text-brand-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md flex items-center gap-2 transition-colors ${loadMode === 'DIRECT' ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
             >
                 <ShieldAlert className="w-3.5 h-3.5" />
                  <span className="hidden md:inline">Direct</span>
             </button>
         </div>
 
-        <div className="h-4 w-px bg-slate-200 mx-1"></div>
+        <div className="h-4 w-px bg-slate-700 mx-1"></div>
 
         {/* URL Input */}
-        <div className="flex-1 flex items-center bg-slate-50 border border-slate-300 rounded-md px-3 py-1.5 focus-within:ring-2 focus-within:ring-brand-500 focus-within:border-brand-500 transition-all">
-            <div className="text-slate-400 mr-2">
+        <div className="flex-1 flex items-center bg-slate-800 border border-slate-700 rounded-md px-3 py-1.5 focus-within:ring-1 focus-within:ring-brand-500 focus-within:border-brand-500 transition-all">
+            <div className="text-slate-500 mr-2">
                {loadMode === 'HTML_PASTE' ? <FileText className="w-4 h-4"/> : <Globe className="w-4 h-4" />}
             </div>
             <input 
@@ -304,7 +304,7 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                 onChange={(e) => loadMode !== 'HTML_PASTE' && setInputUrl(e.target.value)}
                 readOnly={loadMode === 'HTML_PASTE'}
                 placeholder={loadMode === 'HTML_PASTE' ? "Paste your code below..." : "Enter URL"}
-                className={`bg-transparent border-none outline-none text-sm w-full text-slate-700 placeholder:text-slate-400 ${loadMode === 'HTML_PASTE' ? 'cursor-default opacity-70' : ''}`}
+                className={`bg-transparent border-none outline-none text-sm w-full text-slate-200 placeholder:text-slate-500 ${loadMode === 'HTML_PASTE' ? 'cursor-default opacity-70' : ''}`}
             />
         </div>
 
@@ -312,7 +312,7 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
         {isLocked ? (
             <button 
                 onClick={handleUnlock}
-                className="bg-red-50 text-red-600 border border-red-200 px-4 py-1.5 rounded-md hover:bg-red-100 transition-colors flex items-center gap-2 text-sm font-medium animate-pulse"
+                className="bg-red-900/30 text-red-400 border border-red-900/50 px-4 py-1.5 rounded-md hover:bg-red-900/50 transition-colors flex items-center gap-2 text-sm font-medium animate-pulse"
             >
                 <Unlock className="w-3.5 h-3.5" />
                 Unlock Selection
@@ -331,27 +331,27 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
 
       {/* Error Banner */}
       {error && (
-        <div className="bg-red-50 px-4 py-2 border-b border-red-200 flex items-center gap-3">
-            <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0" />
-            <div className="text-xs font-medium text-red-800">{error}</div>
-            <button onClick={() => setError(null)} className="ml-auto text-red-500 hover:text-red-700 text-xs underline">Dismiss</button>
+        <div className="bg-red-900/20 px-4 py-2 border-b border-red-900/50 flex items-center gap-3">
+            <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0" />
+            <div className="text-xs font-medium text-red-300">{error}</div>
+            <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-300 text-xs underline">Dismiss</button>
         </div>
       )}
 
       {/* Browser Viewport */}
-      <div className="flex-1 relative bg-white overflow-hidden flex flex-col">
+      <div className="flex-1 relative bg-slate-900 overflow-hidden flex flex-col">
         
         {/* Paste Input Area */}
         {loadMode === 'HTML_PASTE' && (!iframeContent || iframeContent.length === 0) ? (
-            <div className="h-full flex flex-col p-6 bg-slate-50">
-                 <div className="bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col h-full overflow-hidden">
-                     <div className="px-4 py-3 border-b border-slate-200 bg-slate-50/50 flex items-center gap-2">
+            <div className="h-full flex flex-col p-6 bg-slate-950">
+                 <div className="bg-slate-900 border border-slate-800 rounded-lg shadow-sm flex flex-col h-full overflow-hidden">
+                     <div className="px-4 py-3 border-b border-slate-800 bg-slate-900/50 flex items-center gap-2">
                         <Code className="w-4 h-4 text-brand-500" />
-                        <h3 className="text-sm font-medium text-slate-700">Source Code Input</h3>
+                        <h3 className="text-sm font-medium text-slate-300">Source Code Input</h3>
                      </div>
                      
-                     <div className="p-4 border-b border-slate-100 bg-slate-50/30">
-                        <label className="block text-xs font-semibold text-slate-600 mb-1.5 flex items-center gap-1">
+                     <div className="p-4 border-b border-slate-800 bg-slate-900/30">
+                        <label className="block text-xs font-semibold text-slate-400 mb-1.5 flex items-center gap-1">
                             <Link className="w-3 h-3" />
                             Base URL (Optional)
                         </label>
@@ -360,15 +360,15 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                             value={baseUrl}
                             onChange={(e) => setBaseUrl(e.target.value)}
                             placeholder="e.g. http://localhost:3000 (Fixes broken images/styles)"
-                            className="w-full text-xs p-2 border border-slate-300 rounded shadow-sm focus:border-brand-500 focus:ring-brand-500"
+                            className="w-full text-xs p-2 border border-slate-700 bg-slate-950 text-slate-200 rounded shadow-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 focus:outline-none"
                         />
-                        <p className="text-[10px] text-slate-400 mt-1">
+                        <p className="text-[10px] text-slate-500 mt-1">
                             Entering your app's URL allows relative links (CSS, Images) to load correctly.
                         </p>
                      </div>
 
                      <textarea
-                        className="flex-1 w-full p-4 font-mono text-xs text-slate-700 resize-none outline-none leading-relaxed selection:bg-brand-100"
+                        className="flex-1 w-full p-4 font-mono text-xs text-slate-300 bg-slate-950 resize-none outline-none leading-relaxed selection:bg-brand-900 selection:text-white"
                         placeholder={`<html>
   <head>
     <link rel="stylesheet" href="/styles.css"> 
@@ -396,11 +396,11 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                         sandbox="allow-scripts allow-same-origin allow-forms"
                     />
                 ) : (
-                     <div className="absolute inset-0 flex items-center justify-center text-slate-300 flex-col">
-                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
-                             <Globe className="w-8 h-8" />
+                     <div className="absolute inset-0 flex items-center justify-center text-slate-600 flex-col bg-slate-900">
+                        <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mb-3">
+                             <Globe className="w-8 h-8 text-slate-500" />
                         </div>
-                        <p className="text-sm font-medium text-slate-400">No content loaded</p>
+                        <p className="text-sm font-medium text-slate-500">No content loaded</p>
                     </div>
                 )}
                 
@@ -417,7 +417,7 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                     <div className="absolute bottom-4 right-4 flex gap-2">
                          <button 
                             onClick={() => { setIframeContent(''); setIsLocked(false); onLockChange(false); }}
-                            className="bg-slate-900/90 backdrop-blur text-white text-xs font-medium px-3 py-2 rounded-md shadow-lg hover:bg-slate-800 transition-all flex items-center gap-2"
+                            className="bg-slate-900/90 backdrop-blur text-white text-xs font-medium px-3 py-2 rounded-md shadow-lg hover:bg-slate-800 transition-all flex items-center gap-2 border border-slate-700"
                         >
                             <Code className="w-3 h-3" /> Edit HTML
                         </button>
@@ -426,9 +426,9 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                 
                 {/* Direct Mode Warning */}
                 {loadMode === 'DIRECT' && (
-                     <div className="absolute top-0 left-0 right-0 bg-amber-100/90 backdrop-blur border-b border-amber-200 px-4 py-2 flex items-center justify-center gap-2 z-20">
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
-                        <span className="text-[10px] font-medium text-amber-800">
+                     <div className="absolute top-0 left-0 right-0 bg-amber-900/90 backdrop-blur border-b border-amber-800 px-4 py-2 flex items-center justify-center gap-2 z-20">
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                        <span className="text-[10px] font-medium text-amber-200">
                             Direct Mode: Inspector features disabled due to security. Use "Paste HTML" for element analysis.
                         </span>
                      </div>

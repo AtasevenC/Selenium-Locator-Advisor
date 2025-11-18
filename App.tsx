@@ -60,9 +60,9 @@ function App() {
   }, [inspectorData, isInspectorLocked, isLoading]);
 
   return (
-    <div className="h-screen flex flex-col font-sans bg-slate-50 overflow-hidden">
+    <div className="h-screen flex flex-col font-sans bg-slate-950 overflow-hidden text-slate-100">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 flex-shrink-0 z-30 shadow-sm relative">
+      <header className="bg-slate-900 border-b border-slate-800 flex-shrink-0 z-30 shadow-sm relative">
         <div className="w-full px-4 h-14 flex items-center justify-between">
           
           {/* Logo Section */}
@@ -71,26 +71,26 @@ function App() {
               <Search className="w-4 h-4 text-white" />
             </div>
             <div className="flex flex-col">
-                <h1 className="text-sm font-bold text-slate-900 leading-none">Selenium Locator Advisor</h1>
-                <span className="text-[10px] text-slate-500 font-medium mt-0.5">AI Locator Stabilizer</span>
+                <h1 className="text-sm font-bold text-slate-100 leading-none">Selenium Locator Advisor</h1>
+                <span className="text-[10px] text-slate-400 font-medium mt-0.5">AI Locator Stabilizer</span>
             </div>
-            <div className="hidden sm:flex items-center text-slate-300 mx-2">
+            <div className="hidden sm:flex items-center text-slate-600 mx-2">
                 <ChevronRight className="w-4 h-4" />
             </div>
-             <div className="hidden sm:block text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+             <div className="hidden sm:block text-xs font-medium text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
                {mode === AnalysisMode.LIVE_INSPECTOR ? 'Live Inspector' : mode === AnalysisMode.ELEMENT_ANALYSIS ? 'Manual Analysis' : 'Page Refactor'}
             </div>
           </div>
             
           {/* Mode Tabs */}
           <div className="flex items-center justify-center">
-              <div className="bg-slate-100 p-1 rounded-md flex space-x-1">
+              <div className="bg-slate-800 p-1 rounded-md flex space-x-1 border border-slate-700">
                   <button
                       onClick={() => setMode(AnalysisMode.LIVE_INSPECTOR)}
                       className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded transition-all ${
                       mode === AnalysisMode.LIVE_INSPECTOR
-                          ? 'bg-white text-brand-600 shadow-sm ring-1 ring-black/5'
-                          : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                          ? 'bg-slate-700 text-white shadow-sm ring-1 ring-black/5'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
                       }`}
                   >
                       <Globe className="w-3.5 h-3.5" />
@@ -100,8 +100,8 @@ function App() {
                       onClick={() => setMode(AnalysisMode.ELEMENT_ANALYSIS)}
                       className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded transition-all ${
                       mode === AnalysisMode.ELEMENT_ANALYSIS
-                          ? 'bg-white text-brand-600 shadow-sm ring-1 ring-black/5'
-                          : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                          ? 'bg-slate-700 text-white shadow-sm ring-1 ring-black/5'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
                       }`}
                   >
                       <Target className="w-3.5 h-3.5" />
@@ -111,8 +111,8 @@ function App() {
                       onClick={() => setMode(AnalysisMode.PAGE_REFACTOR)}
                       className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded transition-all ${
                       mode === AnalysisMode.PAGE_REFACTOR
-                          ? 'bg-white text-brand-600 shadow-sm ring-1 ring-black/5'
-                          : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                          ? 'bg-slate-700 text-white shadow-sm ring-1 ring-black/5'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
                       }`}
                   >
                       <LayoutTemplate className="w-3.5 h-3.5" />
@@ -123,7 +123,7 @@ function App() {
 
           {/* Footer / Info */}
           <div className="flex items-center gap-3">
-              <div className="hidden md:flex items-center gap-1.5 text-[10px] font-medium text-brand-600 bg-brand-50 px-2 py-1 rounded-full border border-brand-100">
+              <div className="hidden md:flex items-center gap-1.5 text-[10px] font-medium text-brand-400 bg-brand-900/30 px-2 py-1 rounded-full border border-brand-900/50">
                  Gemini 2.5 Flash Active
               </div>
           </div>
@@ -137,7 +137,7 @@ function App() {
         {mode === AnalysisMode.LIVE_INSPECTOR && (
             <div className="flex w-full h-full">
                 {/* Left: Browser */}
-                <div className="flex-1 bg-slate-100 relative flex flex-col overflow-hidden">
+                <div className="flex-1 bg-slate-950 relative flex flex-col overflow-hidden">
                     <LiveBrowser 
                         onHover={setInspectorData} 
                         onUrlChange={setCurrentInspectorUrl}
@@ -146,17 +146,17 @@ function App() {
                 </div>
                 
                 {/* Right: Inspector Panel OR AI Result */}
-                <div className="w-[400px] flex-shrink-0 bg-white border-l border-slate-200 flex flex-col z-20 shadow-xl">
+                <div className="w-[400px] flex-shrink-0 bg-slate-900 border-l border-slate-800 flex flex-col z-20 shadow-xl">
                     {result ? (
                          <div className="flex flex-col h-full">
-                            <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center flex-shrink-0">
-                                <span className="text-xs font-bold text-brand-700 uppercase tracking-wide flex items-center gap-2">
+                            <div className="px-4 py-3 bg-slate-900 border-b border-slate-800 flex justify-between items-center flex-shrink-0">
+                                <span className="text-xs font-bold text-brand-400 uppercase tracking-wide flex items-center gap-2">
                                   <div className="w-2 h-2 bg-brand-500 rounded-full animate-pulse"></div>
                                   AI Recommendation
                                 </span>
                                 <button 
                                   onClick={() => setResult('')} 
-                                  className="text-xs font-medium text-slate-500 hover:text-slate-800 px-2 py-1 hover:bg-slate-200 rounded transition-colors"
+                                  className="text-xs font-medium text-slate-400 hover:text-slate-200 px-2 py-1 hover:bg-slate-800 rounded transition-colors"
                                 >
                                   Close
                                 </button>
@@ -174,7 +174,7 @@ function App() {
                         />
                     )}
                     {error && (
-                        <div className="m-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-xs">
+                        <div className="m-4 bg-red-900/20 border border-red-900/50 text-red-300 px-4 py-3 rounded-md text-xs">
                             {error}
                         </div>
                     )}
@@ -184,10 +184,10 @@ function App() {
 
         {/* MANUAL / REFACTOR LAYOUT (Centered Container) */}
         {mode !== AnalysisMode.LIVE_INSPECTOR && (
-             <div className="w-full h-full overflow-auto bg-slate-50">
+             <div className="w-full h-full overflow-auto bg-slate-950">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8">
                   <div className="w-full lg:w-5/12 flex flex-col gap-6">
-                      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                      <div className="bg-slate-900 rounded-xl shadow-sm border border-slate-800 p-6">
                       {mode === AnalysisMode.ELEMENT_ANALYSIS ? (
                           <ElementAnalysisForm onAnalyze={handleAnalyze} isLoading={isLoading} />
                       ) : (
@@ -195,7 +195,7 @@ function App() {
                       )}
                       </div>
                       {error && (
-                          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                          <div className="bg-red-900/20 border border-red-900/50 text-red-300 px-4 py-3 rounded-md text-sm">
                               {error}
                           </div>
                       )}
@@ -207,6 +207,13 @@ function App() {
              </div>
         )}
       </main>
+
+      {/* Global Footer Credit */}
+      <footer className="bg-slate-900 border-t border-slate-800 py-1.5 flex items-center justify-center flex-shrink-0 z-30">
+          <p className="text-[10px] font-semibold text-slate-500 tracking-wide">
+            by Dr. Cağrı Ataseven
+          </p>
+      </footer>
     </div>
   );
 }
