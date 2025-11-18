@@ -1,0 +1,5 @@
+{
+  "name": "Selenium Locator Advisor",
+  "description": "A developer tool that analyzes HTML elements to suggest stable Selenium locators and Page Object code using Gemini 2.5 Flash.",
+  "requestFramePermissions": []
+}
