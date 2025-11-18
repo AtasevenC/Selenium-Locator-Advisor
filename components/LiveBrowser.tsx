@@ -1,21 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { InspectorEvent } from '../types';
-import { Loader2, Globe, AlertTriangle, Code, ShieldAlert, FileText, Play, Lock, Unlock, Link } from 'lucide-react';
+import { Loader2, Globe, AlertTriangle, Code, ShieldAlert, FileText, Play, Lock, Unlock, Link, ScanSearch } from 'lucide-react';
 
 interface Props {
   onHover: (data: InspectorEvent) => void;
   onUrlChange: (url: string) => void;
   onLockChange: (locked: boolean) => void;
+  onScanComplete: (elements: any[]) => void;
 }
 
 type LoadMode = 'PROXY' | 'DIRECT' | 'HTML_PASTE';
 
-const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) => {
+const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange, onScanComplete }) => {
   const [inputUrl, setInputUrl] = useState('https://example.com');
   const [baseUrl, setBaseUrl] = useState('');
   const [loadMode, setLoadMode] = useState<LoadMode>('HTML_PASTE');
   const [rawHtml, setRawHtml] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
   const [iframeContent, setIframeContent] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [isLocked, setIsLocked] = useState(false);
@@ -81,12 +83,12 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
             }
         }
 
-        function sendInspectorData(target) {
+        function extractMetadata(target) {
           const metadata = {
             tag: target.tagName.toLowerCase(),
             id: target.id || '',
             classes: Array.from(target.classList).filter(c => c !== '__inspector_highlight' && c !== '__inspector_locked'),
-            text_content: (target.innerText || '').substring(0, 100),
+            text_content: (target.innerText || '').substring(0, 50).replace(/[\\n\\r]+/g, ' ').trim(),
             type: target.getAttribute('type') || '',
             role: target.getAttribute('role') || '',
             name: target.getAttribute('name') || '',
@@ -100,7 +102,11 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                 metadata.data_attributes[attr.name] = attr.value;
             }
           }
+          return metadata;
+        }
 
+        function sendInspectorData(target) {
+          const metadata = extractMetadata(target);
           const payload = {
             type: 'INSPECTOR_HOVER',
             elementHtml: target.outerHTML,
@@ -108,7 +114,6 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
             generatedCss: getCssPath(target),
             generatedXpath: getXPath(target)
           };
-
           window.parent.postMessage(payload, '*');
         }
 
@@ -143,7 +148,6 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
            lockedElement.classList.add('__inspector_locked');
 
            window.parent.postMessage({ type: 'INSPECTOR_LOCKED', isLocked: true }, '*');
-           // Resend data for the locked element to ensure UI is synced
            sendInspectorData(lockedElement);
         }, true);
 
@@ -155,6 +159,36 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                     lockedElement = null;
                 }
                 window.parent.postMessage({ type: 'INSPECTOR_LOCKED', isLocked: false }, '*');
+            }
+            
+            if (event.data && event.data.type === 'SCAN_PAGE') {
+                // Find all interactive elements
+                const selectors = [
+                    'button', 
+                    'input:not([type="hidden"])', 
+                    'select', 
+                    'textarea', 
+                    'a[href]', 
+                    '[role="button"]',
+                    '[role="link"]',
+                    '[role="checkbox"]',
+                    '[role="radio"]'
+                ];
+                const elements = document.querySelectorAll(selectors.join(','));
+                const scanResults = [];
+                
+                elements.forEach(el => {
+                    // Check visibility
+                    if (el.offsetParent === null) return;
+                    
+                    scanResults.push({
+                        metadata: extractMetadata(el),
+                        generatedCss: getCssPath(el),
+                        generatedXpath: getXPath(el)
+                    });
+                });
+                
+                window.parent.postMessage({ type: 'PAGE_SCAN_RESULT', elements: scanResults }, '*');
             }
         });
 
@@ -242,18 +276,28 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
         } else if (event.data.type === 'INSPECTOR_LOCKED') {
              setIsLocked(event.data.isLocked);
              onLockChange(event.data.isLocked);
+        } else if (event.data.type === 'PAGE_SCAN_RESULT') {
+            onScanComplete(event.data.elements);
+            setIsScanning(false);
         }
       }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [onHover, onLockChange]);
+  }, [onHover, onLockChange, onScanComplete]);
 
   const handleUnlock = () => {
       if (iframeRef.current && iframeRef.current.contentWindow) {
           iframeRef.current.contentWindow.postMessage({ type: 'UNLOCK_INSPECTOR' }, '*');
           setIsLocked(false);
           onLockChange(false);
+      }
+  };
+  
+  const handleScanPage = () => {
+      if (iframeRef.current && iframeRef.current.contentWindow) {
+          setIsScanning(true);
+          iframeRef.current.contentWindow.postMessage({ type: 'SCAN_PAGE' }, '*');
       }
   };
 
@@ -307,6 +351,21 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange }) =>
                 className={`bg-transparent border-none outline-none text-sm w-full text-slate-200 placeholder:text-slate-500 ${loadMode === 'HTML_PASTE' ? 'cursor-default opacity-70' : ''}`}
             />
         </div>
+        
+        <div className="h-4 w-px bg-slate-700 mx-1"></div>
+
+        {/* Action Buttons */}
+        {iframeContent && loadMode !== 'DIRECT' && (
+             <button
+                onClick={handleScanPage}
+                disabled={isScanning}
+                className="bg-slate-800 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2 text-xs font-medium"
+                title="Scan all elements on page"
+             >
+                 {isScanning ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <ScanSearch className="w-3.5 h-3.5 text-brand-400" />}
+                 <span className="hidden sm:inline">Scan Page</span>
+             </button>
+        )}
 
         {/* Lock/Unlock Controls */}
         {isLocked ? (

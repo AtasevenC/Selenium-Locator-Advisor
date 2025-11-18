@@ -54,3 +54,13 @@ export interface InspectorEvent {
   generatedCss: string;
   generatedXpath: string;
 }
+
+export interface PageObjectElement {
+  metadata: ElementMetadata;
+  generatedCss: string;
+  generatedXpath: string;
+}
+
+export interface PageScanResult {
+  elements: PageObjectElement[];
+}

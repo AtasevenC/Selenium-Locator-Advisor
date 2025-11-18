@@ -5,7 +5,7 @@ import PageRefactorForm from './components/PageRefactorForm';
 import ResultDisplay from './components/ResultDisplay';
 import LiveBrowser from './components/LiveBrowser';
 import InspectorPanel from './components/InspectorPanel';
-import { AdvisorPayload, AnalysisMode, InspectorEvent, ElementAnalysisPayload } from './types';
+import { AdvisorPayload, AnalysisMode, InspectorEvent, ElementAnalysisPayload, PageObjectElement } from './types';
 import { generateAnalysis } from './services/geminiService';
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
   const [inspectorData, setInspectorData] = useState<InspectorEvent | null>(null);
   const [currentInspectorUrl, setCurrentInspectorUrl] = useState('https://example.com');
   const [isInspectorLocked, setIsInspectorLocked] = useState(false);
+  const [scannedElements, setScannedElements] = useState<PageObjectElement[]>([]);
 
   const handleAnalyze = async (payload: AdvisorPayload) => {
     setIsLoading(true);
@@ -142,6 +143,7 @@ function App() {
                         onHover={setInspectorData} 
                         onUrlChange={setCurrentInspectorUrl}
                         onLockChange={setIsInspectorLocked}
+                        onScanComplete={setScannedElements}
                     />
                 </div>
                 
@@ -168,6 +170,7 @@ function App() {
                     ) : (
                         <InspectorPanel 
                             data={inspectorData} 
+                            scannedElements={scannedElements}
                             onAnalyze={handleLiveAnalysisRequest}
                             isAnalyzing={isLoading}
                             isLocked={isInspectorLocked}
