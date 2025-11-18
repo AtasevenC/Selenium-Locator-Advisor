@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { InspectorEvent } from '../types';
-import { Loader2, Globe, AlertTriangle, Code, ShieldAlert, FileText, Play, Lock, Unlock, Link, ScanSearch } from 'lucide-react';
+import { Loader2, Globe, AlertTriangle, Code, ShieldAlert, FileText, Play, Lock, Unlock, Link, ScanSearch, Presentation } from 'lucide-react';
 
 interface Props {
   onHover: (data: InspectorEvent) => void;
@@ -10,6 +10,98 @@ interface Props {
 }
 
 type LoadMode = 'PROXY' | 'DIRECT' | 'HTML_PASTE';
+
+const DEMO_HTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; color: #334155; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; border-radius: 8px; padding: 24px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); margin-bottom: 24px; }
+        h1 { color: #0f172a; font-size: 24px; margin-bottom: 8px; }
+        h2 { font-size: 18px; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+        button { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #1d4ed8; }
+        button.secondary { background: #64748b; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        th { font-weight: 600; color: #64748b; font-size: 13px; }
+        .status-badge { background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .nav-link { color: #2563eb; text-decoration: none; margin-right: 15px; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>CRM Dashboard</h1>
+            <nav>
+                <a href="#" class="nav-link" id="nav-home">Home</a>
+                <a href="#" class="nav-link" id="nav-customers">Customers</a>
+                <a href="#" class="nav-link" id="nav-settings">Settings</a>
+            </nav>
+        </div>
+
+        <div class="card">
+            <h2>Login to Account</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Email Address</label>
+                    <input type="email" id="username" name="email" placeholder="user@example.com" data-testid="login-email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                     <label style="display:flex; align-items:center; gap:8px; font-weight:400;">
+                        <input type="checkbox" id="remember-me" style="width:auto;"> Remember me
+                     </label>
+                </div>
+                <button type="submit" id="btn-login" data-action="login-submit">Sign In</button>
+                <a href="#" style="font-size:13px; margin-left:15px; color:#64748b;">Forgot password?</a>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Recent Customers</h2>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                <input type="text" placeholder="Search customers..." id="search-input" style="max-width: 250px;">
+                <button class="secondary" id="btn-export">Export CSV</button>
+            </div>
+            <table id="customer-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#C001</td>
+                        <td>Acme Corp</td>
+                        <td><span class="status-badge">Active</span></td>
+                        <td><a href="#" id="edit-c001">Edit</a></td>
+                    </tr>
+                    <tr>
+                        <td>#C002</td>
+                        <td>Global Tech</td>
+                        <td><span class="status-badge">Active</span></td>
+                        <td><a href="#" id="edit-c002">Edit</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+`;
 
 const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange, onScanComplete }) => {
   const [inputUrl, setInputUrl] = useState('https://example.com');
@@ -268,6 +360,23 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange, onSc
     }
   };
 
+  const handleLoadDemo = () => {
+      setLoadMode('HTML_PASTE');
+      setRawHtml(DEMO_HTML);
+      setBaseUrl('');
+      // We need to wait for state update before loading, or just call load with the content directly.
+      // For simplicity, we'll set the state and manually trigger the "render" logic in a timeout or just use a direct effect
+      // But cleaner is:
+      setTimeout(() => {
+          const fullHtml = DEMO_HTML + injectedScript;
+          setIframeContent(fullHtml);
+          setIsLoading(false);
+          setError(null);
+          setIsLocked(false);
+          onLockChange(false);
+      }, 100);
+  };
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data) {
@@ -352,6 +461,18 @@ const LiveBrowser: React.FC<Props> = ({ onHover, onUrlChange, onLockChange, onSc
             />
         </div>
         
+        <div className="h-4 w-px bg-slate-700 mx-1"></div>
+
+        {/* Demo Button */}
+        <button
+            onClick={handleLoadDemo}
+            className="bg-slate-800 text-brand-400 border border-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2 text-xs font-medium"
+            title="Load Offline Demo Page (Safety Mode)"
+        >
+             <Presentation className="w-3.5 h-3.5" />
+             <span className="hidden sm:inline">Load Demo</span>
+        </button>
+
         <div className="h-4 w-px bg-slate-700 mx-1"></div>
 
         {/* Action Buttons */}

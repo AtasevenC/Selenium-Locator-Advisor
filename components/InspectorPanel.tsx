@@ -101,7 +101,7 @@ private WebElement ${generateVariableName(data.metadata)};`;
                     Java Page Object Snippet
                 </label>
                 <div className="relative group">
-                    <div className="bg-slate-950 text-purple-200 p-3 pr-10 rounded-lg font-mono text-xs leading-relaxed shadow-sm border border-slate-800 whitespace-pre overflow-x-auto">
+                    <div className="bg-slate-950 text-purple-200 p-3 pr-10 rounded-lg font-mono text-xs leading-relaxed shadow-sm border border-slate-800 whitespace-pre-wrap break-all">
                         {javaSnippet}
                     </div>
                     <button 
